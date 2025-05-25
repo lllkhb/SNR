@@ -6,9 +6,9 @@ private:
     float m_signalAmplitude;
     float m_noiseAmplitude;
 public:
-    Signal(float signal, float noise);
+    Signal();
     ~Signal();
-    void setValue();
+    void setValue(int signal, int noise);
     float getSNR();
     void toString();
 };
