@@ -1,14 +1,20 @@
 #include <iostream>
 #include <cmath>
+#include <string>
 #include "SNR.h"
 
 using namespace std;
 
 Signal::Signal():
     m_signalAmplitude(0),
-    m_noiseAmplitude(0){}
+    m_noiseAmplitude(0)
+{
+logMessage("Signal was created");
+}
 
-Signal::~Signal(){}
+Signal::~Signal(){
+logMessage("Signal was deleted");
+}
 
 void Signal::setValue(float signal, float noise){
     m_signalAmplitude = signal;
@@ -32,9 +38,14 @@ ClearSignals::ClearSignals():
 
 ClearSignals::ClearSignals(Signal& signal):
     m_signal(signal),
-    m_snr(signal.getSNR()){}
+    m_snr(signal.getSNR())
+{
+ logMessage("Clear Signal was created");
+}
 
-ClearSignals::~ClearSignals(){}
+ClearSignals::~ClearSignals(){
+logMessage("Clear Signal was deleted");
+}
 
 float ClearSignals::getSNR(){
     return m_snr;
@@ -49,21 +60,26 @@ bool ClearSignals::isClear(){
 
 
 
-PureSignals::PureSignals():
+WeakSignals::WeakSignals():
     m_signal(),
     m_snr(0){}
 
-PureSignals::PureSignals(Signal& signal):
+WeakSignals::WeakSignals(Signal& signal):
     m_signal(signal),
-    m_snr(signal.getSNR()){}
+    m_snr(signal.getSNR())
+{
+logMessage("Weak Signal was created");
+}
 
-PureSignals::~PureSignals(){}
+WeakSignals::~WeakSignals(){
+logMessage("Weak Signal was deleted");
+}
 
-float PureSignals::getSNR(){
+float WeakSignals::getSNR(){
     return m_snr;
 }
 
-bool PureSignals::isPure(){
+bool WeakSignals::isWeak(){
     if(m_snr < 20)
         return true;
     else
@@ -75,12 +91,14 @@ bool PureSignals::isPure(){
 SignalManager::SignalManager():
     m_clearArray(nullptr),
     m_clearCount(0),
-    m_pureArray(nullptr),
-    m_pureCount(0){}
+    m_weakArray(nullptr),
+    m_weakCount(0){}
 
 SignalManager::~SignalManager(){
     delete[] m_clearArray;
-    delete[] m_pureArray;
+    logMessage("Array of Clear Signal was deleted");
+    delete[] m_weakArray;
+    logMessage("Array of Weak Signal was deleted");
 }
 
 void SignalManager::addClearSignal(ClearSignals& signal){
@@ -93,20 +111,24 @@ void SignalManager::addClearSignal(ClearSignals& signal){
         delete[] m_clearArray;
         m_clearArray = temp;
         m_clearCount++;
-    }
+        logMessage("Added Clear Signal with SNR = " + to_string(signal.getSNR()));
+    } else
+    logMessage("Signal with SNR = " + to_string(signal.getSNR()) + " is not Clear");
 }
 
-void SignalManager::addPureSignal(PureSignals& signal){
-    if(signal.isPure()){
-        PureSignals* temp = new PureSignals[m_pureCount + 1];
-        for(int i = 0; i < m_pureCount; ++i){
-            temp[i] = m_pureArray[i];
+void SignalManager::addWeakSignal(WeakSignals& signal){
+    if(signal.isWeak()){
+        WeakSignals* temp = new WeakSignals[m_weakCount + 1];
+        for(int i = 0; i < m_weakCount; ++i){
+            temp[i] = m_weakArray[i];
         }
-        temp[m_pureCount] = signal;
-        delete[] m_pureArray;
-        m_pureArray = temp;
-        m_pureCount++;
-    }
+        temp[m_weakCount] = signal;
+        delete[] m_weakArray;
+        m_weakArray = temp;
+        m_weakCount++;
+        logMessage("Added Weak Signal with SNR = " + to_string(signal.getSNR()));
+    } else
+    logMessage("Signal with SNR = " + to_string(signal.getSNR()) + " is not Weak");
 }
 
 void SignalManager::printAll(){
@@ -115,8 +137,12 @@ void SignalManager::printAll(){
         cout << "[" << i + 1 << "] SNR = " << m_clearArray[i].getSNR() << " dB" << endl;
     }
 
-    cout << "Pure Signals (" << m_pureCount << ")" << endl;
-    for(int i = 0; i < m_pureCount; ++i){
-        cout << "[" << i + 1 << "] SNR = " << m_pureArray[i].getSNR() << " dB" << endl;
+    cout << "Weak Signals (" << m_weakCount << ")" << endl;
+    for(int i = 0; i < m_weakCount; ++i){
+        cout << "[" << i + 1 << "] SNR = " << m_weakArray[i].getSNR() << " dB" << endl;
     }
+}
+
+void logMessage(const string& message){
+    cout << "[LOG] " << message << endl;
 }

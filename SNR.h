@@ -1,5 +1,8 @@
 #ifndef SNR_H_INCLUDED
 #define SNR_H_INCLUDED
+#include <string>
+
+using namespace std;
 
 class Signal{
 private:
@@ -26,16 +29,16 @@ public:
     bool isClear();
 };
 
-class PureSignals {
+class WeakSignals {
 private:
     Signal m_signal;
     float m_snr;
 public:
-    PureSignals();
-    PureSignals(Signal& signal);
-    ~PureSignals();
+    WeakSignals();
+    WeakSignals(Signal& signal);
+    ~WeakSignals();
     float getSNR();
-    bool isPure();
+    bool isWeak();
 };
 
 class SignalManager {
@@ -43,17 +46,18 @@ private:
     ClearSignals* m_clearArray;
     int m_clearCount;
 
-    PureSignals* m_pureArray;
-    int m_pureCount;
+    WeakSignals* m_weakArray;
+    int m_weakCount;
 
 public:
     SignalManager();
     ~SignalManager();
 
     void addClearSignal(ClearSignals& signal);
-    void addPureSignal(PureSignals& signal);
+    void addWeakSignal(WeakSignals& signal);
     void printAll();
 };
 
+void logMessage(const string& message);
 
 #endif // SNR_H_INCLUDED
