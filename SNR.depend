@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1748214350 source:c:\projectoop\snr\main.cpp
+1748280007 source:c:\projectoop\snr\main.cpp
 	<iostream>
 	"SNR.h"
 
-1748214259 c:\projectoop\snr\snr.h
+1748289858 c:\projectoop\snr\snr.h
 
-1748214603 source:c:\projectoop\snr\snr.cpp
+1748279492 source:c:\projectoop\snr\snr.cpp
 	<iostream>
+	<cmath>
 	"SNR.h"
-	<math.h>
 

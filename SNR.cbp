@@ -32,6 +32,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="SNR.cpp" />
+		<Unit filename="SNR.h" />
 		<Unit filename="main.cpp" />
 		<Extensions />
 	</Project>

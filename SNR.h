@@ -5,36 +5,55 @@ class Signal{
 private:
     float m_signalAmplitude;
     float m_noiseAmplitude;
+
 public:
     Signal();
     ~Signal();
-    void setValue(int signal, int noise);
+    void setValue(float signal, float noise);
     float getSNR();
     void toString();
 };
 
-class ClearSignals{
+class ClearSignals {
 private:
     Signal m_signal;
     float m_snr;
 public:
-    ClearSignals(Signal &signal);
+    ClearSignals();
+    ClearSignals(Signal& signal);
     ~ClearSignals();
+    float getSNR();
     bool isClear();
-    void addSignal();
-    void printType();
 };
 
-class PureSignals{
+class PureSignals {
 private:
     Signal m_signal;
     float m_snr;
 public:
-    PureSignals(Signal &signal);
+    PureSignals();
+    PureSignals(Signal& signal);
     ~PureSignals();
-    bool access();
-    void addSignal();
-    void printType();
+    float getSNR();
+    bool isPure();
 };
+
+class SignalManager {
+private:
+    ClearSignals* m_clearArray;
+    int m_clearCount;
+
+    PureSignals* m_pureArray;
+    int m_pureCount;
+
+public:
+    SignalManager();
+    ~SignalManager();
+
+    void addClearSignal(ClearSignals& signal);
+    void addPureSignal(PureSignals& signal);
+    void printAll();
+};
+
 
 #endif // SNR_H_INCLUDED
